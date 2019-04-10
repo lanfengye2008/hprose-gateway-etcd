@@ -3,9 +3,9 @@ package resolver
 import (
 	"context"
 	"encoding/json"
+	"github.com/lanfengye2008/hprose-gateway-types"
 	"go.etcd.io/etcd/clientv3"
 	"go.etcd.io/etcd/mvcc/mvccpb"
-	"github.com/vlorc/hprose-gateway-types"
 )
 
 type etcdResolver struct {
@@ -53,9 +53,9 @@ func (r *etcdResolver) watch(prefix string, watcher types.NamedWatcher) {
 			case mvccpb.PUT:
 				info := &types.Service{}
 				json.Unmarshal(ev.Kv.Value, info)
-				watcher.Push([]types.Update{{Op: types.Add, Id: id, Service: info}})
+				watcher.Push([]types.Update{{Op: types.Add, Id: id, Service: info,Value:string(ev.Kv.Value)}})
 			case mvccpb.DELETE:
-				watcher.Push([]types.Update{{Op: types.Delete, Id: id}})
+				watcher.Push([]types.Update{{Op: types.Delete, Id: id,Value:string(ev.Kv.Value)}})
 			}
 		}
 	}
