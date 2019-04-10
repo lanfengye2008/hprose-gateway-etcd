@@ -24,6 +24,19 @@
 
 * 服务解析器
 ```golang
+import (
+	"context"
+	"fmt"
+	"github.com/vlorc/hprose-gateway-etcd/manager"
+	"github.com/vlorc/hprose-gateway-etcd/resolver"
+	types "github.com/vlorc/hprose-gateway-types"
+	"go.etcd.io/etcd/clientv3"
+)
+
+var cli = func() *clientv3.Client {
+		c,_:=clientv3.New(clientv3.Config{})
+		return c
+}
 r := resolver.NewResolver(cli, ctx, "rpc" /*前缀*/)
 // 打印事件
 go r.Watch("*", watcher.NewPrintWatcher(fmt.Printf))
@@ -31,6 +44,20 @@ go r.Watch("*", watcher.NewPrintWatcher(fmt.Printf))
 
 * 服务注册器
 ```golang
+import (
+	"context"
+	"fmt"
+	"github.com/vlorc/hprose-gateway-etcd/manager"
+	"github.com/vlorc/hprose-gateway-etcd/resolver"
+	types "github.com/vlorc/hprose-gateway-types"
+	"go.etcd.io/etcd/clientv3"
+)
+
+
+var cli func() *clientv3.Client= func() *clientv3.Client {
+		c,_:=clientv3.New(clientv3.Config{})
+		return c
+}
 m := manager.NewManager(cli, context.Background(), "rpc" /*前缀*/, 5 /*心跳*/)
 s := m.Register("user" /*服务名*/, "1" /*ID*/)
 s.Update(&types.Service{

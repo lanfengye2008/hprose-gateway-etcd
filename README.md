@@ -24,6 +24,19 @@ Hprose gateway etcd service discovery based on golang
 
 * Service discovery
 ```golang
+import (
+	"context"
+	"fmt"
+	"github.com/vlorc/hprose-gateway-etcd/manager"
+	"github.com/vlorc/hprose-gateway-etcd/resolver"
+	types "github.com/vlorc/hprose-gateway-types"
+	"go.etcd.io/etcd/clientv3"
+)
+
+var cli = func() *clientv3.Client {
+		c,_:=clientv3.New(clientv3.Config{})
+		return c
+	}
 r := resolver.NewResolver(cli, ctx, "rpc" /*prefix*/)
 // print event 
 go r.Watch("*", watcher.NewPrintWatcher(fmt.Printf))
@@ -31,6 +44,19 @@ go r.Watch("*", watcher.NewPrintWatcher(fmt.Printf))
 
 * Service register
 ```golang
+import (
+	"context"
+	"fmt"
+	"github.com/vlorc/hprose-gateway-etcd/manager"
+	"github.com/vlorc/hprose-gateway-etcd/resolver"
+	types "github.com/vlorc/hprose-gateway-types"
+	"go.etcd.io/etcd/clientv3"
+)
+
+var cli func() *clientv3.Client= func() *clientv3.Client {
+		c,_:=clientv3.New(clientv3.Config{})
+		return c
+}
 m := manager.NewManager(cli, context.Background(), "rpc" /*prefix*/, 5 /*ttl*/)
 s := manage.Register("user" /*name*/, "1" /*uuid*/)
 s.Update(&types.Service{
