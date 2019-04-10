@@ -3,9 +3,9 @@ package manager
 import (
 	"context"
 	"encoding/json"
-	"github.com/coreos/etcd/clientv3"
-	"github.com/vlorc/hprose-gateway-types"
 	"github.com/vlorc/hprose-gateway-etcd/client"
+	"github.com/vlorc/hprose-gateway-types"
+	"go.etcd.io/etcd/clientv3"
 	"sync"
 )
 
